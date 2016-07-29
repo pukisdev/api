@@ -16,7 +16,7 @@ $app->get('/', function () use ($app) {
     return $app->version();
 });
 
-$app->group(['prefix'=>'mst/pms', 'middleware' => 'token'], function($app){
+$app->group(['prefix'=>'mst/pms', 'middleware' => /*'cors'*/'token'], function($app){
 	// Auth::guest();
 	$app->resource('customer', 'App\Http\Controllers\PMS\customerController');
 });

@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 
 // use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Http\Models\pms_customer_mst as modelMst;
-use App\Http\Requests\reqPmsCustomerMst as reqMst;
+
+// use App\Http\Requests\reqPmsCustomerMst as reqMst;
 use Carbon\Carbon as Carbon;
 use DB;
 
@@ -46,7 +46,8 @@ class customerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(reqMst $request, modelMst $model)
+    // public function store(reqMst $request, modelMst $model)
+    public function store(Request $request, modelMst $model)
     {
          $request->merge(array(
             'id_customer' => $this->generate_id(),
@@ -87,15 +88,25 @@ class customerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
     */ 
-    public function update(reqMst $request, modelMst $customer)
+    // public function update(reqMst $request, modelMst $customer)
+    public function update(Request $request, modelMst $customer)
     {
-        //
-        // dd($request->all());
-        // $abc->fill($request->all())->save();
-        // return response($abc->find($id));
-        // return response($abc->find($request->id_customer));
-        $customer->fill($request->all())->save();
+        // DB::enableQueryLog();    
+
+        // // dd($request->all());
+        // // $abc->fill($request->all())->save();
+        // // return response($abc->find($id));
+        // // return response($abc->find($request->id_customer));
+        $update = $customer->find($request->id_customer);
+        $update->nama_customer    = $request->nama_customer;
+        $update->sys_user_update  = $request->sys_user_update;
+        $update->sys_status_aktif = $request->sys_status_aktif;
+        $update->sys_tgl_update = Carbon::now();
+        $update->save();
+        // dd(DB::getQueryLog());   
+
         return response($customer->find($request->id_customer));
+        // return true;
     }
 
     /**
